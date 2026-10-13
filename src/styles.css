@@ -146,3 +146,15 @@ li{margin:3px 0;overflow-wrap:anywhere}
   .step{order:4;width:100%}
   .step button{flex:1}
 }
+
+/* modal */
+.modalback{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--card);color:var(--ink);border:1px solid var(--line);border-top:5px solid var(--sp);border-radius:14px;max-width:420px;width:100%;padding:16px 18px 14px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.modal h2{margin:0 0 8px;font-size:17px;letter-spacing:-.2px}
+.modal h2 span{color:var(--sp)}
+.modalbody{font-size:14px;line-height:1.65}
+.modalbody p{margin:0 0 8px}
+.modalbtns{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.modalbtns button{padding:6px 14px;font-size:13.5px}
+.modalbtns button.danger{background:var(--no);border-color:var(--no);color:#fff}
+@media (max-width:859px){ .modalbtns button{flex:1} }

@@ -7,6 +7,7 @@ import type { Line, Node } from './types';
 import { Toc, type NodeStat } from './components/Toc';
 import { Pane, type Crumb } from './components/Pane';
 import { Toolbar } from './components/Toolbar';
+import { ConfirmModal } from './components/ConfirmModal';
 import { judge } from './engine';
 
 interface BInfo { chId: string; alts: string[]; line: Line; node: Node; }
@@ -41,6 +42,7 @@ export function App() {
   const [ui, setUi] = useState(loadUi);
   const [hint, setHint] = useState(false);
   const [drawer, setDrawer] = useState(false);
+  const [revealAsk, setRevealAsk] = useState<number | null>(null);
   const [copyLabel, setCopyLabel] = useState('틀린 것 복사');
   const { loc, scope } = ui;
   const paneRef = useRef<HTMLDivElement>(null);
@@ -236,6 +238,11 @@ export function App() {
   };
 
   const onReveal = () => {
+    const remaining = actList.filter(x => judge(states[x.chId].v[x.b.id] ?? '', x.b.alts) !== 'ok').length;
+    if (remaining > 0) setRevealAsk(remaining);
+  };
+  const doReveal = () => {
+    setRevealAsk(null);
     const base = gradeScope();
     const add: string[] = [];
     for (const x of actList) {
@@ -385,6 +392,17 @@ export function App() {
           onInput={onInput} onCommit={onCommit} onEnter={onEnter}
           toolbar={toolbar} done={doneBox} paneRef={paneRef} />
       </div>
+      {revealAsk !== null && (
+        <ConfirmModal
+          title="정답을 미리 볼까요?"
+          body={<>
+            <p>현재 범위에서 아직 못 맞힌 <b>{revealAsk}칸</b>의 정답이 모두 화면에 표시됩니다.</p>
+            <p>표시된 칸은 <b>한 번이라도 틀린 칸(↻)</b>으로 기록되어, 나중에 복습 대상에 들어갑니다. 먼저 스스로 떠올려 본 뒤에 보는 게 외우는 데 더 좋아요.</p>
+          </>}
+          confirmLabel={`정답 ${revealAsk}칸 보기`}
+          onConfirm={doReveal}
+          onCancel={() => setRevealAsk(null)} />
+      )}
     </div>
   );
 }
