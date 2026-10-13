@@ -43,6 +43,7 @@ export function App() {
   const [hint, setHint] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [revealAsk, setRevealAsk] = useState<number | null>(null);
+  const [resetAsk, setResetAsk] = useState(false);
   const [copyLabel, setCopyLabel] = useState('틀린 것 복사');
   const { loc, scope } = ui;
   const paneRef = useRef<HTMLDivElement>(null);
@@ -253,9 +254,10 @@ export function App() {
     setRevealed(prev => { const n = new Set(prev); add.forEach(i => n.add(i)); return n; });
   };
 
-  const onReset = () => {
-    const names = scopeChIds.map(id => chLabel(chapters.find(c => c.id === id)!)).join(', ');
-    if (!window.confirm(`${names}의 모든 답과 기록을 지우고 1회차부터 시작할까요?`)) return;
+  const resetNames = scopeChIds.map(id => chLabel(chapters.find(c => c.id === id)!)).join(', ');
+  const onReset = () => setResetAsk(true);
+  const doReset = () => {
+    setResetAsk(false);
     const out: Record<string, ChState> = {};
     for (const id of scopeChIds) out[id] = emptyState();
     commitStates(out);
@@ -392,6 +394,17 @@ export function App() {
           onInput={onInput} onCommit={onCommit} onEnter={onEnter}
           toolbar={toolbar} done={doneBox} paneRef={paneRef} />
       </div>
+      {resetAsk && (
+        <ConfirmModal
+          title="처음부터 다시 시작할까요?"
+          body={<>
+            <p><b>{resetNames}</b>에 입력한 <b>모든 답과 기록</b>이 지워지고 1회차부터 다시 시작합니다.</p>
+            <p>한 번이라도 틀린 칸(↻) 표시와 회차 기록도 함께 사라지며, <b>되돌릴 수 없어요.</b></p>
+          </>}
+          confirmLabel="모두 지우고 처음부터"
+          onConfirm={doReset}
+          onCancel={() => setResetAsk(false)} />
+      )}
       {revealAsk !== null && (
         <ConfirmModal
           title="정답을 미리 볼까요?"
