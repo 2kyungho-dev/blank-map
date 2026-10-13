@@ -31,7 +31,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--act);outline-of
 .tabs button.on small{color:inherit;opacity:.75}
 
 /* layout */
-.layout{display:grid;grid-template-columns:330px minmax(0,1fr);max-width:1320px;margin:0 auto}
+.layout{display:grid;grid-template-columns:330px minmax(0,1fr)}
 .tocwrap{position:sticky;top:var(--hh);height:calc(100vh - var(--hh));overflow-y:auto;border-right:1px solid var(--line);background:var(--tocbg)}
 .backdrop{display:none}
 
@@ -63,7 +63,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--act);outline-of
 .dot{width:7px;height:7px;border-radius:50%;background:var(--no);flex:none}
 
 /* pane */
-.pane{min-width:0;padding:12px 16px 120px}
+.pane{min-width:0;max-width:1100px;padding:12px 24px 120px}
 .phead{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;margin-bottom:8px}
 .crumbs{display:flex;gap:2px;align-items:center;flex-wrap:wrap;font-size:13.5px;margin-right:auto}
 .crumb{border:0;background:none;padding:2px 5px;font-weight:700;color:var(--act)}
