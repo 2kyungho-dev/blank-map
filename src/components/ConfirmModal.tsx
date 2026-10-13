@@ -4,12 +4,14 @@ interface Props {
   title: string;
   body: ReactNode;
   confirmLabel: string;
+  confirmTone?: 'danger' | 'go';
+  secondary?: { label: string; onClick: () => void };
   cancelLabel?: string;
   onConfirm: () => void;
   onCancel: () => void;
 }
 
-export function ConfirmModal({ title, body, confirmLabel, cancelLabel = '취소', onConfirm, onCancel }: Props) {
+export function ConfirmModal({ title, body, confirmLabel, confirmTone = 'danger', secondary, cancelLabel = '취소', onConfirm, onCancel }: Props) {
   const cancelRef = useRef<HTMLButtonElement>(null);
   const cancelFn = useRef(onCancel);
   cancelFn.current = onCancel;
@@ -29,7 +31,8 @@ export function ConfirmModal({ title, body, confirmLabel, cancelLabel = '취소'
         <div className="modalbody">{body}</div>
         <div className="modalbtns">
           <button ref={cancelRef} onClick={onCancel}>{cancelLabel}</button>
-          <button className="danger" onClick={onConfirm}>{confirmLabel}</button>
+          {secondary && <button className="danger-o" onClick={secondary.onClick}>{secondary.label}</button>}
+          <button className={confirmTone === 'go' ? 'go' : 'danger'} onClick={onConfirm}>{confirmLabel}</button>
         </div>
       </div>
     </div>

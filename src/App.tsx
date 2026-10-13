@@ -8,6 +8,7 @@ import { Toc, type NodeStat } from './components/Toc';
 import { Pane, type Crumb } from './components/Pane';
 import { Toolbar } from './components/Toolbar';
 import { ConfirmModal } from './components/ConfirmModal';
+import { buildRoundMarkdown, downloadMarkdown, safeFileName } from './export';
 import { judge } from './engine';
 
 interface BInfo { chId: string; alts: string[]; line: Line; node: Node; }
@@ -44,6 +45,7 @@ export function App() {
   const [drawer, setDrawer] = useState(false);
   const [revealAsk, setRevealAsk] = useState<number | null>(null);
   const [resetAsk, setResetAsk] = useState(false);
+  const [roundName, setRoundName] = useState('');
   const [copyLabel, setCopyLabel] = useState('틀린 것 복사');
   const { loc, scope } = ui;
   const paneRef = useRef<HTMLDivElement>(null);
@@ -255,7 +257,15 @@ export function App() {
   };
 
   const resetNames = scopeChIds.map(id => chLabel(chapters.find(c => c.id === id)!)).join(', ');
-  const onReset = () => setResetAsk(true);
+  const hasAnswers = scopeChIds.some(id => Object.values(states[id].v).some(v => (v ?? '').trim()));
+  const onReset = () => { setRoundName(`${resetNames} ${roundLabel}`); setResetAsk(true); };
+  const saveRound = () => {
+    const now = new Date();
+    const name = roundName.trim() || `${resetNames} ${roundLabel}`;
+    const chs = scopeChIds.map(id => chapters.find(c => c.id === id)!);
+    const d = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    downloadMarkdown(`${safeFileName(name)} (${d}).md`, buildRoundMarkdown({ name, now, chapters: chs, states }));
+  };
   const doReset = () => {
     setResetAsk(false);
     const out: Record<string, ChState> = {};
@@ -368,7 +378,7 @@ export function App() {
     <div className="app">
       <header className="top">
         <button className="menu" aria-label="목차 열기" aria-expanded={drawer} onClick={() => setDrawer(d => !d)}>☰ <span>목차</span></button>
-        <div className="brand">빈칸지도</div>
+        <div className="brand">셀 2텀 빈칸지도</div>
         <div className="tabs" role="tablist">
           {tabs.map(t => (
             <button key={t.id} role="tab" aria-selected={activeTab === t.id} className={activeTab === t.id ? 'on' : ''} onClick={() => onTab(t.id)}>
@@ -400,9 +410,18 @@ export function App() {
           body={<>
             <p><b>{resetNames}</b>에 입력한 <b>모든 답과 기록</b>이 지워지고 1회차부터 다시 시작합니다.</p>
             <p>한 번이라도 틀린 칸(↻) 표시와 회차 기록도 함께 사라지며, <b>되돌릴 수 없어요.</b></p>
+            {hasAnswers && <>
+              <label className="namefield" htmlFor="roundname">이 회차의 이름 — 정답·오답 기록을 마크다운(.md) 파일로 저장해요</label>
+              <input id="roundname" className="nameinput" value={roundName} maxLength={80} autoComplete="off"
+                onChange={e => setRoundName(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); saveRound(); doReset(); } }} />
+              <p className="namehint">파일에는 모든 칸의 내 답·정답·결과, 요약, 틀린 칸 복습 목록이 들어갑니다.</p>
+            </>}
           </>}
-          confirmLabel="모두 지우고 처음부터"
-          onConfirm={doReset}
+          confirmLabel={hasAnswers ? '.md 저장하고 처음부터' : '모두 지우고 처음부터'}
+          confirmTone={hasAnswers ? 'go' : 'danger'}
+          secondary={hasAnswers ? { label: '저장 없이 처음부터', onClick: doReset } : undefined}
+          onConfirm={() => { if (hasAnswers) saveRound(); doReset(); }}
           onCancel={() => setResetAsk(false)} />
       )}
       {revealAsk !== null && (
