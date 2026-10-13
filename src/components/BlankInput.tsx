@@ -18,7 +18,7 @@ export interface BlankInputProps {
 function widthEm(s: string): number {
   let w = 0;
   for (const ch of s) w += /[ᄀ-ᇿ㄰-㆏가-힯一-鿿]/.test(ch) ? 1.05 : 0.62;
-  return Math.max(3.4, w + 1.2);
+  return Math.max(3.4, Math.min(26, w + 1.2));
 }
 
 function BlankInputImpl(p: BlankInputProps) {
@@ -28,7 +28,8 @@ function BlankInputImpl(p: BlankInputProps) {
   if (res === 'sp') em = '철자: ' + alts[0];
   else if (res === 'no') em = '→ ' + alts[0];
   else if (rev && res !== 'ok') em = '→ ' + alts[0];
-  const longest = alts.reduce((a, b) => (b.length > a.length ? b : a), '');
+  // 폭은 대표 정답(alts[0]) 기준. 더 긴 대체답을 직접 입력하면 입력한 만큼만 늘어난다.
+  const sizeBy = p.value.length > alts[0].length ? p.value : alts[0];
   return (
     <span className={cls} data-id={id}>
       <input
@@ -37,7 +38,7 @@ function BlankInputImpl(p: BlankInputProps) {
         value={p.value}
         readOnly={p.readOnly}
         placeholder={p.hint ? alts[0].slice(0, 1) + '…' : ''}
-        style={{ width: widthEm(longest) + 'em' }}
+        style={{ width: widthEm(sizeBy) + 'em' }}
         autoCapitalize="off"
         autoCorrect="off"
         autoComplete="off"
