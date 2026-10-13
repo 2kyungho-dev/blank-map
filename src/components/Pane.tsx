@@ -88,17 +88,17 @@ export function Pane(p: Props) {
             </Fragment>
           ))}
         </div>
-        <div className="scope" role="group" aria-label="범위">
-          {SCOPES.map(([s, l]) => (
-            <button key={s} className={p.scope === s ? 'on' : ''} aria-pressed={p.scope === s} onClick={() => p.onScope(s)}>{l}</button>
-          ))}
-        </div>
         {p.scope !== 'all' && (
           <div className="step">
             <button disabled={!p.prevLabel} onClick={p.onPrev}>‹ {p.prevLabel ?? '이전'}</button>
             <button disabled={!p.nextLabel} onClick={p.onNext}>{p.nextLabel ?? '다음'} ›</button>
           </div>
         )}
+        <div className="scope" role="group" aria-label="범위">
+          {SCOPES.map(([s, l]) => (
+            <button key={s} className={p.scope === s ? 'on' : ''} aria-pressed={p.scope === s} onClick={() => p.onScope(s)}>{l}</button>
+          ))}
+        </div>
       </div>
       {p.toolbar}
       {p.done}

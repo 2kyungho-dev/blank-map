@@ -95,14 +95,12 @@ button.on{outline:2px solid var(--c1)}
 .chap{margin-bottom:34px}
 .lead{color:var(--mute);font-size:13.5px;margin:2px 0 12px}
 .seclabel{margin:0 0 8px;font-weight:700;color:var(--mute);font-size:13px}
-.nd.l2{background:var(--card);border:1px solid var(--line);border-top:5px solid var(--cc);border-radius:14px;padding:14px 14px 6px;margin-bottom:16px}
-.nd.l2>.nh{margin:0 0 2px;font-size:18px;color:var(--cc)}
+.nd.l2{margin:0 0 20px}
+.nd.l2>.nh{margin:0 0 8px;font-size:13px;font-weight:700;color:var(--mute)}
 .nd .nnum{font-variant-numeric:tabular-nums}
-.nd.l3{margin:10px 0 12px;padding-left:12px;border-left:3px solid var(--line);scroll-margin-top:calc(var(--hh) + var(--tb) + 8px)}
+.nd.l3{margin:0 0 12px;background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cc);border-radius:12px;padding:10px 14px 6px;scroll-margin-top:calc(var(--hh) + var(--tb) + 8px)}
 .nd.l2{scroll-margin-top:calc(var(--hh) + var(--tb) + 8px)}
 .nd.l3>.nh{font-size:15px;margin:0 0 4px;position:sticky;top:calc(var(--hh) + var(--tb));background:var(--card);z-index:2;padding:3px 0}
-.nd.l3:only-child{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--cc);border-radius:12px;padding:10px 14px 6px}
-.chap>.nd.l3{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cc);border-radius:12px;padding:10px 14px 6px}
 .nd.l4{margin:8px 0 6px;padding-left:10px;border-left:2px dotted var(--line);scroll-margin-top:calc(var(--hh) + var(--tb) + 8px)}
 .nd.l4>.nh{font-size:13.5px;margin:0 0 2px;color:var(--mute)}
 .q{color:var(--mute);font-size:13px;margin:0 0 8px}
