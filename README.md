@@ -7,7 +7,7 @@
 |---|---|---|---|---|---|
 | Ch7 Replication, Maintenance, and Rearrangements of Genomic DNA | 이규영 | 7.1–7.3 | 32 | 153 | 259 |
 | Ch8 RNA Synthesis and Processing | 김재봉 | 8.1–8.3 | 23 | 144 | 210 |
-| Ch9 Transcriptional Regulation and Epigenetics | 김재봉 | 9.1–9.3 | 31 | 158 | 285 |
+| Ch9 Transcriptional Regulation and Epigenetics | 김재봉 | 9.1–9.3 | 32 | 160 | 279 |
 | Ch10 Protein Synthesis, Processing, and Regulation | 조현주 | 10.1–10.4 | 38 | 218 | 401 |
 
 > 챕터 번호는 교재(Cooper) 기준입니다. 예전 `Ch08_빈칸지도.html`은 교재 Ch8+Ch9가 섞여 있었고, `Ch09_빈칸지도.html`은 지금의 Ch10(단백질 합성)입니다.
